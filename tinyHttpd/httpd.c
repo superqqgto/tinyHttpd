@@ -61,8 +61,10 @@ void *accept_request(void *pclient)
                     * program */
  char *query_string = NULL;
  size_t client = *(size_t *)pclient;
+ printf("%s--%d\n", __FILE__, __LINE__ );
 
  numchars = get_line(client, buf, sizeof(buf));
+    printf("%s--%d, buf:%s\n", __FILE__, __LINE__, buf);
  i = 0; j = 0;
  while (!ISspace(buf[j]) && (i < sizeof(method) - 1))
  {
@@ -78,11 +80,15 @@ void *accept_request(void *pclient)
  }
 
  if (strcasecmp(method, "POST") == 0)
+ {
   cgi = 1;
+ }
 
  i = 0;
  while (ISspace(buf[j]) && (j < sizeof(buf)))
+ {
   j++;
+ }
  while (!ISspace(buf[j]) && (i < sizeof(url) - 1) && (j < sizeof(buf)))
  {
   url[i] = buf[j];
@@ -94,7 +100,9 @@ void *accept_request(void *pclient)
  {
   query_string = url;
   while ((*query_string != '?') && (*query_string != '\0'))
+  {
    query_string++;
+  }
   if (*query_string == '?')
   {
    cgi = 1;
@@ -105,24 +113,36 @@ void *accept_request(void *pclient)
 
  sprintf(path, "htdocs%s", url);
  if (path[strlen(path) - 1] == '/')
+ {
   strcat(path, "index.html");
+ }
  if (stat(path, &st) == -1) {
   while ((numchars > 0) && strcmp("\n", buf))  /* read & discard headers */
+  {
    numchars = get_line(client, buf, sizeof(buf));
+  }
   not_found(client);
  }
  else
  {
   if ((st.st_mode & S_IFMT) == S_IFDIR)
+  {
    strcat(path, "/index.html");
+  }
   if ((st.st_mode & S_IXUSR) ||
       (st.st_mode & S_IXGRP) ||
       (st.st_mode & S_IXOTH)    )
+  {
    cgi = 1;
+  }
   if (!cgi)
+  {
    serve_file(client, path);
+  }
   else
+  {
    execute_cgi(client, path, method, query_string);
+  }
  }
 
  close(client);
@@ -218,8 +238,12 @@ void execute_cgi(int client, const char *path,
 
  buf[0] = 'A'; buf[1] = '\0';
  if (strcasecmp(method, "GET") == 0)
+ {
   while ((numchars > 0) && strcmp("\n", buf))  /* read & discard headers */
+  {
    numchars = get_line(client, buf, sizeof(buf));
+  }
+ }
  else    /* POST */
  {
   numchars = get_line(client, buf, sizeof(buf));
@@ -227,7 +251,9 @@ void execute_cgi(int client, const char *path,
   {
    buf[15] = '\0';
    if (strcasecmp(buf, "Content-Length:") == 0)
+   {
     content_length = atoi(&(buf[16]));
+   }
    numchars = get_line(client, buf, sizeof(buf));
   }
   if (content_length == -1) {
@@ -283,7 +309,9 @@ void execute_cgi(int client, const char *path,
     write(cgi_input[1], &c, 1);
    }
   while (read(cgi_output[0], &c, 1) > 0)
+  {
    send(client, &c, 1, 0);
+  }
 
   close(cgi_output[0]);
   close(cgi_input[1]);
@@ -321,9 +349,13 @@ int get_line(int sock, char *buf, int size)
     n = recv(sock, &c, 1, MSG_PEEK);
     /* DEBUG printf("%02X\n", c); */
     if ((n > 0) && (c == '\n'))
+    {
      recv(sock, &c, 1, 0);
+    }
     else
+    {
      c = '\n';
+    }
    }
    buf[i] = c;
    i++;
@@ -398,11 +430,15 @@ void serve_file(int client, const char *filename)
 
  buf[0] = 'A'; buf[1] = '\0';
  while ((numchars > 0) && strcmp("\n", buf))  /* read & discard headers */
+ {
   numchars = get_line(client, buf, sizeof(buf));
+ }
 
  resource = fopen(filename, "r");
  if (resource == NULL)
+ {
   not_found(client);
+ }
  else
  {
   headers(client, filename);
@@ -426,22 +462,30 @@ int startup(u_short *port)
 
  httpd = socket(PF_INET, SOCK_STREAM, 0);
  if (httpd == -1)
+ {
   error_die("socket");
+ }
  memset(&name, 0, sizeof(name));
  name.sin_family = AF_INET;
  name.sin_port = htons(*port);
  name.sin_addr.s_addr = htonl(INADDR_ANY);
  if (bind(httpd, (struct sockaddr *)&name, sizeof(name)) < 0)
+ {
   error_die("bind");
+ }
  if (*port == 0)  /* if dynamically allocating a port */
  {
   socklen_t namelen = sizeof(name);
   if (getsockname(httpd, (struct sockaddr *)&name, &namelen) == -1)
+  {
    error_die("getsockname");
+  }
   *port = ntohs(name.sin_port);
  }
  if (listen(httpd, 5) < 0)
+ {
   error_die("listen");
+ }
  return(httpd);
 }
 

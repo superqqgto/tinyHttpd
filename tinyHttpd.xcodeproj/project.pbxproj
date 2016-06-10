@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		73D1C1F51CC2A0C500BD974A /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 73D1C1F41CC2A0C500BD974A /* main.c */; };
+		73CA1C191CC916B200F625C3 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = 73CA1C181CC916B200F625C3 /* httpd.c */; };
+		73D1C2031CC38AF900BD974A /* simpleclient.c in Sources */ = {isa = PBXBuildFile; fileRef = 73D1C2021CC38AF900BD974A /* simpleclient.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +24,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		73CA1C181CC916B200F625C3 /* httpd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = httpd.c; sourceTree = "<group>"; };
 		73D1C1F11CC2A0C500BD974A /* tinyHttpd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tinyHttpd; sourceTree = BUILT_PRODUCTS_DIR; };
-		73D1C1F41CC2A0C500BD974A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		73D1C1FE1CC38ACF00BD974A /* check.cgi */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = check.cgi; sourceTree = "<group>"; };
+		73D1C1FF1CC38ACF00BD974A /* color.cgi */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = color.cgi; sourceTree = "<group>"; };
+		73D1C2001CC38ACF00BD974A /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		73D1C2011CC38ACF00BD974A /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		73D1C2021CC38AF900BD974A /* simpleclient.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = simpleclient.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +63,22 @@
 		73D1C1F31CC2A0C500BD974A /* tinyHttpd */ = {
 			isa = PBXGroup;
 			children = (
-				73D1C1F41CC2A0C500BD974A /* main.c */,
+				73CA1C181CC916B200F625C3 /* httpd.c */,
+				73D1C2021CC38AF900BD974A /* simpleclient.c */,
+				73D1C1FD1CC38ACF00BD974A /* htdocs */,
 			);
 			path = tinyHttpd;
+			sourceTree = "<group>";
+		};
+		73D1C1FD1CC38ACF00BD974A /* htdocs */ = {
+			isa = PBXGroup;
+			children = (
+				73D1C1FE1CC38ACF00BD974A /* check.cgi */,
+				73D1C1FF1CC38ACF00BD974A /* color.cgi */,
+				73D1C2001CC38ACF00BD974A /* index.html */,
+				73D1C2011CC38ACF00BD974A /* README */,
+			);
+			path = htdocs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +137,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73D1C1F51CC2A0C500BD974A /* main.c in Sources */,
+				73CA1C191CC916B200F625C3 /* httpd.c in Sources */,
+				73D1C2031CC38AF900BD974A /* simpleclient.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +259,7 @@
 				73D1C1FA1CC2A0C500BD974A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
